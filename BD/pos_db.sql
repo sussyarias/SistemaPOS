@@ -1,4 +1,4 @@
-/*Pegar en tu base de datos Postgres :)*/
+--Pegar en tu base de datos Postgres :)
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
@@ -39,7 +39,7 @@ CREATE TABLE factura_items (
     precio NUMERIC(10,2)
 );
 
--- Datos iniciales
+-- Datos iniciales para pruebas :D
 INSERT INTO usuarios(nombre, password, rol) VALUES ('Admin', '1234', 'admin');
 INSERT INTO usuarios(nombre, password, rol) VALUES ('Cajero1', '0000', 'cajero');
 

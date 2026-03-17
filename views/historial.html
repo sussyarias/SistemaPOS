@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Historial — SistemaPOS{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+
+    <div>
+        <h2 class="text-xl font-bold text-white">Historial de facturas</h2>
+        <p class="text-slate-400 text-sm">Últimas 50 facturas emitidas</p>
+    </div>
+
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+        {% if facturas %}
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                    <th class="text-left px-5 py-3">#</th>
+                    <th class="text-left px-5 py-3">Fecha</th>
+                    <th class="text-left px-5 py-3">Cajero</th>
+                    <th class="text-right px-5 py-3">Subtotal</th>
+                    <th class="text-right px-5 py-3">Descuento</th>
+                    <th class="text-right px-5 py-3">IVA</th>
+                    <th class="text-right px-5 py-3">Total</th>
+                    <th class="text-right px-5 py-3">Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in facturas %}
+                <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
+                    <td class="px-5 py-3 text-slate-400 font-mono text-xs">{{ '%05d' % f.id }}</td>
+                    <td class="px-5 py-3 text-slate-300">{{ f.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td class="px-5 py-3 text-slate-300">{{ f.cajero }}</td>
+                    <td class="px-5 py-3 text-right text-slate-300">₡{{ '{:,.0f}'.format(f.subtotal) }}</td>
+                    <td class="px-5 py-3 text-right {% if f.descuento > 0 %}text-red-400{% else %}text-slate-500{% endif %}">
+                        {% if f.descuento > 0 %}-₡{{ '{:,.0f}'.format(f.descuento) }}{% else %}—{% endif %}
+                    </td>
+                    <td class="px-5 py-3 text-right text-slate-300">₡{{ '{:,.0f}'.format(f.iva) }}</td>
+                    <td class="px-5 py-3 text-right text-indigo-400 font-semibold">₡{{ '{:,.0f}'.format(f.total) }}</td>
+                    <td class="px-5 py-3 text-right">
+                        <button onclick="verDetalle({{ f.id }})"
+                                class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded-lg hover:bg-slate-700 transition">
+                            Ver
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-slate-500 text-sm text-center py-10">No hay facturas registradas.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div id="modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div class="flex items-center justify-between mb-5">
+            <h3 id="modal-titulo" class="text-white font-bold text-base">Detalle de factura</h3>
+            <button onclick="document.getElementById('modal').classList.add('hidden')"
+                    class="text-slate-500 hover:text-white transition">✕</button>
+        </div>
+        <div id="modal-contenido" class="text-sm text-slate-300 space-y-2"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/historial.js') }}"></script>
+{% endblock %}

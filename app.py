@@ -1,13 +1,18 @@
 from flask import Flask, redirect, url_for, session
 from routes import auth, pos, inventario, reportes
+import config
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='views')
 app.secret_key = 'pos_secret_key_2026'
 
 app.register_blueprint(auth.bp)
 app.register_blueprint(pos.bp)
 app.register_blueprint(inventario.bp)
 app.register_blueprint(reportes.bp)
+
+@app.context_processor
+def inject_config():
+    return dict(config=config.EMPRESA)
 
 @app.route('/')
 def index():

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — SistemaPOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-sm">
+        <div class="text-center mb-8">
+            <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
+                🧾
+            </div>
+            <h1 class="text-2xl font-bold text-white">SistemaPOS</h1>
+            <p class="text-slate-400 text-sm mt-1">Iniciá sesión para continuar</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            {% if error %}
+            <div class="mb-4 px-4 py-3 rounded-lg bg-red-900/40 border border-red-800 text-red-300 text-sm">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1.5">Usuario</label>
+                    <input type="text" name="nombre" required autofocus
+                           class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm"
+                           placeholder="Nombre de usuario">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1.5">Contraseña</label>
+                    <input type="password" name="password" required
+                           class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm"
+                           placeholder="••••••••">
+                </div>
+                <button type="submit"
+                        class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-semibold py-3 rounded-xl transition-all text-sm mt-2">
+                    Ingresar
+                </button>
+            </form>
+        </div>
+
+        <p class="text-center text-slate-600 text-xs mt-6">SistemaPOS · Sussy Arias</p>
+    </div>
+
+</body>
+</html>

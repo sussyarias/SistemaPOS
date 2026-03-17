@@ -1,3 +1,4 @@
+#Cambias a conveniencia C:
 EMPRESA = {
     'nombre':    'NOMBRE EMPRESA',
     'telefono':  '2222-3333',
