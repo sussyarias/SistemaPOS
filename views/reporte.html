@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Reporte del día — SistemaPOS{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+
+    <div>
+        <h2 class="text-xl font-bold text-white">Reporte del día</h2>
+        <p class="text-slate-400 text-sm">{{ now }}</p>
+    </div>
+
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Facturas</p>
+            <p class="text-3xl font-bold text-white">{{ data.resumen.total_facturas }}</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Subtotal</p>
+            <p class="text-3xl font-bold text-white">₡{{ '{:,.0f}'.format(data.resumen.subtotal) }}</p>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <p class="text-slate-400 text-xs uppercase tracking-wider mb-1">Descuentos</p>
+            <p class="text-3xl font-bold text-red-400">-₡{{ '{:,.0f}'.format(data.resumen.descuentos) }}</p>
+        </div>
+        <div class="bg-slate-900 border border-indigo-800 rounded-2xl p-5">
+            <p class="text-indigo-400 text-xs uppercase tracking-wider mb-1">Total del día</p>
+            <p class="text-3xl font-bold text-indigo-400">₡{{ '{:,.0f}'.format(data.resumen.total) }}</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col">
+            <h3 class="text-white font-semibold text-sm mb-4">Ventas por cajero</h3>
+            {% if data.por_cajero %}
+            <div class="space-y-3 overflow-y-auto" style="max-height:260px">
+                {% for c in data.por_cajero %}
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 rounded-full bg-indigo-900 flex items-center justify-center text-indigo-300 text-xs font-bold">
+                            {{ c.cajero[0].upper() }}
+                        </div>
+                        <span class="text-slate-300 text-sm">{{ c.cajero }}</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-white font-semibold text-sm">₡{{ '{:,.0f}'.format(c.total) }}</p>
+                        <p class="text-slate-500 text-xs">{{ c.facturas }} factura{{ 's' if c.facturas != 1 }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-slate-500 text-sm">Sin ventas registradas hoy.</p>
+            {% endif %}
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col">
+            <h3 class="text-white font-semibold text-sm mb-4">Top productos vendidos</h3>
+            {% if data.top_productos %}
+            <div class="space-y-3 overflow-y-auto" style="max-height:260px">
+                {% for i, p in enumerate(data.top_productos) %}
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-slate-600 text-xs font-mono w-4">{{ i + 1 }}</span>
+                        <span class="text-slate-300 text-sm">{{ p.descripcion }}</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-white font-semibold text-sm">₡{{ '{:,.0f}'.format(p.total) }}</p>
+                        <p class="text-slate-500 text-xs">{{ p.unidades }} unidades</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-slate-500 text-sm">Sin ventas registradas hoy.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

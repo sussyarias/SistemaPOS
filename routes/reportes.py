@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for, jsonify
 from database import get_reporte_hoy, get_historial, get_factura_items
+from datetime import datetime
 from functools import wraps
 
 bp = Blueprint('reportes', __name__)
@@ -28,4 +29,6 @@ def detalle(factura_id):
 @login_required
 def reporte():
     data = get_reporte_hoy()
-    return render_template('reporte.html', data=data, usuario=session['usuario'])
+    now  = datetime.now().strftime('%d/%m/%Y')
+    return render_template('reporte.html', data=data, now=now,
+                           enumerate=enumerate, usuario=session['usuario'])
